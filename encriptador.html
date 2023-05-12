@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Challenge Encriptador</title>
+        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+        <link rel="stylesheet" href="encriptador.css">
+    </head>
+
+    <body>
+        <header>
+            <img class="logo" src="Vector.png" alt="a">
+        </header>
+
+        <main>
+            <textarea id="miTextarea" rows="1" placeholder="Ingrese el texto aqui"></textarea>
+
+            <section class="frame1">
+                <img src="bi_exclamation-circle-fill.jpg">
+                <h2>Solo letras minúsculas y sin acentos</h2>
+            </section>
+            
+            <section id="rectangle">
+                <img id= "muneco" src="Muñeco.jpg" alt="">
+
+                <div class="frame5">
+                    <p class="t1">Ningún mensaje fue encontrado</p>
+                    <p class="t2">Ingresa el texto que desees encriptar o desencriptar.</p>
+                </div>
+            </section>
+
+            <button id="botonCopiar" style="display: none;">Copiar</button>
+            
+        </main>
+
+        <footer>
+            <section class="frame3">
+                <button class="boton1"><p class="b1">Encriptar</p></button>
+                <button class="boton2"><p class="b1">Desencriptar</p></button>
+            </section>
+            
+        </footer>
+
+        <script>
+            var textarea = document.getElementById('miTextarea');
+        
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            var botonEncriptar = document.querySelector('.boton1');
+
+
+            botonEncriptar.addEventListener('click', function() {
+            
+            var texto = document.getElementById('miTextarea').value;
+            
+            
+            var textoEncriptado = encriptarTexto(texto, 0); 
+            
+            
+            var rectangle = document.getElementById('rectangle');
+            rectangle.textContent = textoEncriptado;
+            
+
+            document.getElementById('miTextarea').value = '';
+
+            document.getElementById('botonCopiar').style.display = 'block';
+            });
+
+            var botonCopiar = document.getElementById('botonCopiar');
+                    botonCopiar.addEventListener('click', function() {
+                    
+                        var textoEncriptado = document.getElementById('rectangle').textContent;
+
+                        
+                        var textareaTemp = document.createElement('textarea');
+                        textareaTemp.value = textoEncriptado;
+                        document.body.appendChild(textareaTemp);
+
+                    
+                        textareaTemp.select();
+                        document.execCommand('copy');
+
+                    
+                        document.body.removeChild(textareaTemp);
+
+                        
+                        alert('Texto encriptado copiado al portapapeles: ' + textoEncriptado);
+                    });
+
+            function encriptarTexto(texto, desplazamiento) {
+            var resultado = '';
+            var alfabeto = 'aeiou'; 
+            for (var i = 0; i < texto.length; i++) {
+                var char = texto.charAt(i);
+                // Verifica si el carácter está en mayúsculas
+                if (char === char.toUpperCase()) {
+                alert('Texto con mayusculas, favor de utilizar solo minusculas') ;
+                return '';
+                }
+                switch (char) {
+                case 'a':
+                    char = 'ai';
+                    break;
+                case 'e':
+                    char = 'enter';
+                    break;
+                case 'i':
+                    char = 'imes';
+                    break;
+                case 'o':
+                    char = 'ober';
+                    break;
+                case 'u':
+                    char = 'ufat';
+                    break;
+                default:
+                    var index = alfabeto.indexOf(char.toLowerCase());
+                    if (index !== -1) {  alfabeto
+                    var newIndex = (index + desplazamiento) % alfabeto.length;
+                    if (newIndex < 0) {
+                        newIndex += alfabeto.length;
+                    }
+                    char = alfabeto.charAt(newIndex);
+                    }
+                    break;
+                }
+                resultado += char;
+            }
+            return resultado;
+            }
+
+            var botonDesencriptar = document.querySelector('.boton2');
+
+            botonDesencriptar.addEventListener('click', function() {
+
+            var textoEncriptado = document.getElementById('miTextarea').value;
+            
+
+            var textoDesencriptado = desencriptarTexto(textoEncriptado, 0); 
+            
+
+            textoDesencriptado = textoDesencriptado.replace(/enter/g, 'e')
+                                                .replace(/imes/g, 'i')
+                                                .replace(/ai/g, 'a')
+                                                .replace(/ober/g, 'o')
+                                                .replace(/ufat/g, 'u');
+            
+
+            var rectangle = document.getElementById('rectangle');
+            rectangle.textContent = textoDesencriptado;
+            });
+
+
+            function desencriptarTexto(textoEncriptado, desplazamiento) {
+            var resultado = '';
+            var alfabeto = 'aeioutrmsbft '; 
+            for (var i = 0; i < textoEncriptado.length; i++) {
+                var char = textoEncriptado.charAt(i);
+                var index = alfabeto.indexOf(char);
+                if (index !== -1) { 
+                var newIndex = (index - desplazamiento) % alfabeto.length;
+                if (newIndex < 0) {
+                    newIndex += alfabeto.length;
+                }
+                char = alfabeto.charAt(newIndex);
+                }
+                resultado += char;
+            }
+            return resultado;
+            }
+
+        let btnClear1 = document.querySelector('.boton1'); 
+        let btnClear2 = document.querySelector('.boton2');
+        let inputs = document.querySelectorAll('textarea');
+
+        btnClear1.addEventListener('click', () => {
+            inputs.forEach(textarea => textarea.value = ''); 
+        });
+
+        btnClear2.addEventListener('click', () => {
+            inputs.forEach(textarea => textarea.value = ''); 
+        });
+
+
+        </script>
+
+        
+
+    </body>
+</HTML>
